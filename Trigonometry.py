@@ -29,11 +29,14 @@ def getCenter(p1, p2):
     center = ((p1[0] + p2[0])/2, (p1[1] + p2[1])/2)
     return center
 
-def getAngle(a, b, c):
-    ang = math.degrees(math.atan2(c[1]-b[1], c[0]-b[0]) - math.atan2(a[1]-b[1], a[0]-b[0]))
-    return ang + 360 if ang < 0 else ang
+def getAngle(adj, hyp):
+    adj = getDistance(adj[0], adj[1])
+    hyp = getDistance(hyp[0], hyp[1])
+    angle = math.acos(adj/hyp)
+    angle = math.degrees(angle)
+    return round(angle, 2)
 
-def writeDistance(p1, p2, pos, side1=(0,0), side2=(0,0), axis="x"):
+def writeDistance(p1, p2, pos, axis="x", side1=(0,0), side2=(0,0)):
     dist_txt = str(getDistance(p1, p2))
     dist_txt = font.render(dist_txt, True, "black")
     dist_txt_rect = dist_txt.get_rect()
@@ -50,6 +53,26 @@ def writeDistance(p1, p2, pos, side1=(0,0), side2=(0,0), axis="x"):
             window.blit(dist_txt, (center[0]+side1[0], center[1]+side1[1]), dist_txt_rect)
         else:
             window.blit(dist_txt, (center[0]+side2[0], center[1]+side2[1]), dist_txt_rect)
+
+def writeAngle(p1, p2, p3, pos, axis="x", side1=(0,0), side2=(0,0)):
+    angle_txt = str(getAngle((p1, p2), (p2, p3)))
+    angle_txt = font.render(angle_txt, True, "black")
+    angle_txt_rect = angle_txt.get_rect()
+
+    if axis == "x":
+        if pos[0] <= WIDTH/2: # LEFT
+            window.blit(angle_txt, (p2[0]+side1[0], p2[1]+side1[1]), angle_txt_rect)
+            #window.blit(angle_txt, (p2[0]+side1[0], p2[0]+side1[1]), angle_txt_rect)
+        else: # RIGHT
+            window.blit(angle_txt, (p2[0]+side2[0], p2[1]+side2[1]), angle_txt_rect)
+            #window.blit(angle_txt, (p2[0]+side2[0], p2[0]+side2[1]), angle_txt_rect)
+
+    if axis == "y":
+        if pos[1] <= HEIGHT/2:
+            window.blit(angle_txt, (p2[0]+side1[0], p2[1]+side1[1]), angle_txt_rect)
+            #window.blit(angle_txt, (p2[0]+side1[0], p2[0]+side1[1]), angle_txt_rect)
+        else:
+            window.blit(angle_txt, (p2[0]+side2[0], p2[1]+side2[1]), angle_txt_rect)
 
 def run():
     run = True
@@ -123,6 +146,11 @@ def run():
                     writeDistance(point_B, point_O, pos, axis="y", side1=(-8,13), side2=(-8,-20))
                     writeDistance(point_B, point_A, pos, axis="x", side1=(-30,0), side2=(10,0))
                     writeDistance(point_O, point_A, pos, axis="x", side1=(20,-5), side2=(-35,-5))
+
+                    #print(getAngle((point_B, point_A), (point_A, point_O)))
+                    writeAngle(point_B, point_A, point_O, pos, axis="y", side1=(-15,-30), side2=(-15,30))
+                    writeAngle(point_B, point_O, point_A, pos, axis="x", side1=(0,-20), side2=(-35,-20))
+
 
         update()
 
