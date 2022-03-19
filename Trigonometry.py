@@ -1,5 +1,4 @@
 import pygame
-import random
 import math
 
 pygame.init()
@@ -38,7 +37,7 @@ def getAngle(adj, hyp):
 
 def writeDistance(p1, p2, pos, axis="x", side1=(0,0), side2=(0,0)):
     dist_txt = str(getDistance(p1, p2))
-    dist_txt = font.render(dist_txt, True, "black")
+    dist_txt = font.render(dist_txt, True, "cyan4")
     dist_txt_rect = dist_txt.get_rect()
     center = getCenter(p1, p2)
 
@@ -55,23 +54,20 @@ def writeDistance(p1, p2, pos, axis="x", side1=(0,0), side2=(0,0)):
             window.blit(dist_txt, (center[0]+side2[0], center[1]+side2[1]), dist_txt_rect)
 
 def writeAngle(p1, p2, p3, pos, axis="x", side1=(0,0), side2=(0,0)):
-    angle_txt = str(getAngle((p1, p2), (p2, p3)))
-    angle_txt = font.render(angle_txt, True, "black")
+    angle_txt = str(getAngle((p1, p2), (p2, p3)))+"°"
+    angle_txt = font.render(angle_txt, True, "darkorange3")
     angle_txt_rect = angle_txt.get_rect()
 
     if axis == "x":
         if pos[0] <= WIDTH/2: # LEFT
             window.blit(angle_txt, (p2[0]+side1[0], p2[1]+side1[1]), angle_txt_rect)
-            #window.blit(angle_txt, (p2[0]+side1[0], p2[0]+side1[1]), angle_txt_rect)
         else: # RIGHT
             window.blit(angle_txt, (p2[0]+side2[0], p2[1]+side2[1]), angle_txt_rect)
-            #window.blit(angle_txt, (p2[0]+side2[0], p2[0]+side2[1]), angle_txt_rect)
 
     if axis == "y":
-        if pos[1] <= HEIGHT/2:
+        if pos[1] <= HEIGHT/2: # TOP
             window.blit(angle_txt, (p2[0]+side1[0], p2[1]+side1[1]), angle_txt_rect)
-            #window.blit(angle_txt, (p2[0]+side1[0], p2[0]+side1[1]), angle_txt_rect)
-        else:
+        else: # DOWN
             window.blit(angle_txt, (p2[0]+side2[0], p2[1]+side2[1]), angle_txt_rect)
 
 def run():
@@ -79,7 +75,7 @@ def run():
     clock = pygame.time.Clock()
     fps = 30
     clock.tick(fps)
-    move = True
+    move = False
 
     while run:
         for event in pygame.event.get():
@@ -108,6 +104,7 @@ def run():
                     point_A = pos
                     point_B = (pos[0], HEIGHT/2)
 
+                    # Placing points at the center of segments
                     cent1 = getCenter(point_A, point_B)
                     cent2 = getCenter(point_A, point_O)
                     cent3 = getCenter(point_B, point_O)
@@ -115,7 +112,7 @@ def run():
                     pygame.draw.circle(window, "red", cent2, 4)
                     pygame.draw.circle(window, "red", cent3, 4)
 
-                    # POINT O
+                    # POINT O (static)
                     center_txt = "O"
                     center_txt = font.render(center_txt, True, "black")
                     center_txt_rect = center_txt.get_rect()
@@ -143,14 +140,14 @@ def run():
                         else : # RIGHT HALF
                             window.blit(pointB_txt, (pos[0]-5, HEIGHT/2 - 15), pointB_txt_rect)
 
+                    # Show segment length
                     writeDistance(point_B, point_O, pos, axis="y", side1=(-8,13), side2=(-8,-20))
                     writeDistance(point_B, point_A, pos, axis="x", side1=(-30,0), side2=(10,0))
                     writeDistance(point_O, point_A, pos, axis="x", side1=(20,-5), side2=(-35,-5))
 
-                    #print(getAngle((point_B, point_A), (point_A, point_O)))
+                    # Show angles
                     writeAngle(point_B, point_A, point_O, pos, axis="y", side1=(-15,-30), side2=(-15,30))
                     writeAngle(point_B, point_O, point_A, pos, axis="x", side1=(0,-20), side2=(-35,-20))
-
 
         update()
 
