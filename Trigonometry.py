@@ -33,46 +33,23 @@ def getAngle(a, b, c):
     ang = math.degrees(math.atan2(c[1]-b[1], c[0]-b[0]) - math.atan2(a[1]-b[1], a[0]-b[0]))
     return ang + 360 if ang < 0 else ang
 
-def writeDistance(p1, p2, pos, top=(0,0), down=(0,0), left=(0,0), right=(0,0)):
+def writeDistance(p1, p2, pos, side1=(0,0), side2=(0,0), axis="x"):
     dist_txt = str(getDistance(p1, p2))
     dist_txt = font.render(dist_txt, True, "black")
     dist_txt_rect = dist_txt.get_rect()
     center = getCenter(p1, p2)
 
-    if pos[1] <= (HEIGHT/2): # UPPER HALF
-        if pos[0] <= WIDTH/2: # LEFT
-            print("UPPER LEFT")
-            window.blit(dist_txt, (center[0]+top[0], center[1]+top[1],
-             center[0]+left[0], center[1]+left[1]), dist_txt_rect)
-        else: # RIGHT
-            print("UPPER RIGHT")
-            window.blit(dist_txt, (center[0]+top[0], center[1]+top[1], 
-            center[0]+right[0], center[1]+right[1]), dist_txt_rect)
-    
-    if pos[1] > (HEIGHT/2): # LOWER HALF
-        if pos[0] <= WIDTH/2: # LEFT
-            print("LOWER LEFT")
-            window.blit(dist_txt, (center[0]+down[0], center[1]+down[1], 
-            center[0]+left[0], center[1]+left[1]), dist_txt_rect)
-        else: # RIGHT
-            print("LOWER RIGHT")
-            window.blit(dist_txt, (center[0]+down[0], center[1]+down[1], 
-            center[0]+right[0], center[1]+right[1]), dist_txt_rect)
+    if axis == "x":
+        if pos[0] <= WIDTH/2:
+            window.blit(dist_txt, (center[0]+side1[0], center[1]+side1[1]), dist_txt_rect)
+        else:
+            window.blit(dist_txt, (center[0]+side2[0], center[1]+side2[1]), dist_txt_rect)
 
-    """ if pos[1] <= (HEIGHT/2): # UPPER HALF
-        print("UPPER HALF")
-        window.blit(dist_txt, (center[0]+top[0], center[1]+top[1]), dist_txt_rect) #-10, +15
-    elif pos[1] > (HEIGHT/2): # LOWER HALF
-        print("LOWER HALF")
-        window.blit(dist_txt, (center[0]+down[0], center[1]+down[1]), dist_txt_rect) #-10, -25
-
-    elif pos[0] <= (WIDTH/2): # HALF LEFT
-        print("HALF LEFT")
-        window.blit(dist_txt, (center[0]+left[0], center[1]+left[1]), dist_txt_rect)
-    else: # HALF RIGHT
-        print("HALF RIGHT")
-        window.blit(dist_txt, (center[0]+right[0], center[1]+right[1]), dist_txt_rect)
- """
+    if axis == "y":
+        if pos[1] <= HEIGHT/2:
+            window.blit(dist_txt, (center[0]+side1[0], center[1]+side1[1]), dist_txt_rect)
+        else:
+            window.blit(dist_txt, (center[0]+side2[0], center[1]+side2[1]), dist_txt_rect)
 
 def run():
     run = True
@@ -142,11 +119,10 @@ def run():
                             window.blit(pointB_txt, (pos[0]-5, HEIGHT/2 - 15), pointB_txt_rect)
                         else : # RIGHT HALF
                             window.blit(pointB_txt, (pos[0]-5, HEIGHT/2 - 15), pointB_txt_rect)
-                    
-                    # DISTANCE B-O
-                    writeDistance(point_B, point_O, pos, top=(-10, 15), down=(-10, -25))
-                    writeDistance(point_B, point_A, pos, right=(25, 0))
-                    writeDistance(point_O, point_A, pos)
+
+                    writeDistance(point_B, point_O, pos, axis="y", side1=(-8,13), side2=(-8,-20))
+                    writeDistance(point_B, point_A, pos, axis="x", side1=(-30,0), side2=(10,0))
+                    writeDistance(point_O, point_A, pos, axis="x", side1=(20,-5), side2=(-35,-5))
 
         update()
 
