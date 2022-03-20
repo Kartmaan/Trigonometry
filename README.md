@@ -1,5 +1,5 @@
 # Trigonometry
-A demonstration of trigonometry on Pygame with a right-angled triangle that can be transformed using the movement of the cursor, the length of the segments as well as the angles are displayed in real time
+A demonstration of trigonometry on Pygame with a right-angled triangle that can be transformed using the movement of the cursor, the length of the segments as well as the angles are displayed in real time.
 - Left-click and move the cursor to transform the figure
 
 - Left-click again to stop/restart the transformation
