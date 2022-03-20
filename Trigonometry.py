@@ -8,6 +8,7 @@ window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 font = pygame.font.Font(None,20) # Default font, size 20
 
+# Initialisation before run
 window.fill("white")
 pygame.draw.line(window, "black", (0, HEIGHT/2), (WIDTH, HEIGHT/2))
 pygame.draw.circle(window, "black", (WIDTH/2, HEIGHT/2), 5)
@@ -25,10 +26,40 @@ def getDistance(p1, p2):
     return int(dist)
 
 def getCenter(p1, p2):
+    """ Function to find the center between two x,y coordinates
+
+    p1 and p2 are tuples
+    p1 = (x,y) of first point
+    p2 = (x,y) of second point
+
+    The function returns a tuple
+
+    Example:
+    getCenter((141, 400), (512,400))
+    >>> (326.5, 400)
+    """
     center = ((p1[0] + p2[0])/2, (p1[1] + p2[1])/2)
     return center
 
 def getAngle(adj, hyp):
+    """ Function to calculate an angle from the 
+    lengths of 2 segments  
+    
+    adj and hyp are 2 tuples each containing 2 tuples 
+    corresponding to the x,y coordinates of a segment
+    example : 
+    adj = ((141, 400), (512,400))
+    hyp = ((512, 400), (141, 121))
+
+    Each pair of coordinates is then used to calculate 
+    the distance between them
+    example:
+    getDistance((141, 400), (512, 400))
+    >>> 371
+
+    These distances correspond to the lengths of the two segments, 
+    thus making it possible to calculate the angle
+    """
     adj = getDistance(adj[0], adj[1])
     hyp = getDistance(hyp[0], hyp[1])
     angle = math.acos(adj/hyp)
@@ -76,6 +107,21 @@ def run():
     fps = 30
     clock.tick(fps)
     move = False
+
+    #print(getDistance((141, 400), (512, 400)))
+    print(getCenter((141, 400), (512,400)))
+
+    # Introductory sentences
+    intro_txt = "Left click and move the cursor"
+    intro_txt = font.render(intro_txt, True, "black")
+    intro_txt_rect = intro_txt.get_rect()
+
+    instruc_txt = "Left click again to stop/retrieve the transformation"
+    instruc_txt = font.render(instruc_txt, True, "black")
+    instruc_txt_rect = instruc_txt.get_rect()
+
+    window.blit(intro_txt, ((WIDTH/2)-(intro_txt_rect[2]/2), (HEIGHT/4)-intro_txt_rect[3]-10), intro_txt_rect)
+    window.blit(instruc_txt, ((WIDTH/2)-(instruc_txt_rect[2]/2), (HEIGHT/4)), instruc_txt_rect)
 
     while run:
         for event in pygame.event.get():
