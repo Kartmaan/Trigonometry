@@ -8,6 +8,7 @@ pygame.init()
 
 WIDTH, HEIGHT = 1024, 800 #1024, 800
 window = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('Trigonometry')
 
 font = pygame.font.Font(None,20) # Default font, size 20
 
